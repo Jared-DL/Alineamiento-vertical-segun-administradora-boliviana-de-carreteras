@@ -11,7 +11,6 @@ def recolectar_datos():
     global progresiva_PIV_3
     global m_pendiente_entrada
     global n_pendiente_salida
-    global lr_longitud_recta
     global a_dif_de_pendientes
     
     velocidad_proyecto=float(input('Velocidad de Proyecto Vp[km/h]: '))
@@ -23,8 +22,7 @@ def recolectar_datos():
         progresiva_PIV_2=float(input('progresiva de PIV_2[m](PIV donde se hará la curva): '))
         m_pendiente_entrada=float(input('Pendiente de entrada m[tanto por 1]: '))
         n_pendiente_salida=float(input('Pendiente de salida n[tanto por 1]: '))
-        lr_longitud_recta=float(input('Longitud de recta Lr[m]: '))
-        a_dif_de_pendientes=m_pendiente_entrada-n_pendiente_salida
+        a_dif_de_pendientes=n_pendiente_salida-m_pendiente_entrada
         print(f'diferencia de pendientes A[tanto por 1]={a_dif_de_pendientes}')
     else:
         print('Muy pronto... estar atento')
@@ -44,10 +42,14 @@ def recolectar_datos():
 def longitud_de_la_curva_vertical():
     global tipo_de_curva   
     global velocidad_en_CV #CV=curva vertical
+    global lr_longitud_recta
+
     if a_dif_de_pendientes>0:
         tipo_de_curva='concava'
+        lr_longitud_recta= '(no es necesario para curvas concavas)'
     elif a_dif_de_pendientes<0:
         tipo_de_curva='convexa'
+        lr_longitud_recta=float(input('Longitud de recta Lr[m]: '))
     else:
         print('ERROR se tiene una diferencia de pendiente de 0 por lo que no se necesita una curva vertical')
         exit()
@@ -92,10 +94,10 @@ def longitud_de_la_curva_vertical():
     
 
 def eleccion_simple(pregunta):
-    print(pregunta)
-    eleccion=input("""0. NO
-1. SI
-elección: """)
+    print(f'    {pregunta}')
+    eleccion=input("""    0. NO
+    1. SI
+     Elección: """)
     if eleccion == '0':
         return False
     elif eleccion == '1':
@@ -123,9 +125,9 @@ def calculos_curva_simetrica():
     cota_curva=[]
     longitud_de_curva=float(input('longitud adoptada de curva vertical[m]: '))
     cota_PCV = cota_PIV_2 - longitud_de_curva/2*m_pendiente_entrada
-    progresiva_PCV = progresiva_PIV_2-(cota_PIV_2-cota_PCV)/abs(m_pendiente_entrada)
+    progresiva_PCV = progresiva_PIV_2-(abs(cota_PIV_2-cota_PCV))/abs(m_pendiente_entrada)
     cota_FCV= cota_PIV_2 + longitud_de_curva/2*n_pendiente_salida
-    progresiva_FCV = progresiva_PIV_2+(cota_PIV_2-cota_FCV)/abs(n_pendiente_salida)
+    progresiva_FCV = progresiva_PIV_2+(abs(cota_PIV_2-cota_FCV))/abs(n_pendiente_salida)
     longitud_de_replanteo=int(input('longitud entre puntos para replanteo(10 , 20 etc) ='))
     print(f'Cota PCV[msnm] = {cota_PCV}')
     print(f'Progresiva PCV[msnm] = {progresiva_PCV}')
@@ -174,9 +176,9 @@ def calculos_curva_asimétrica():
     longitud_de_curva_total=longitud_de_curva_1+longitud_de_curva_2
     print(f'longitud total de la curva[m]: {longitud_de_curva_total}')
     cota_PCV = cota_PIV_2 - longitud_de_curva_1*m_pendiente_entrada
-    progresiva_PCV = progresiva_PIV_2-(cota_PIV_2-cota_PCV)/abs(m_pendiente_entrada)
+    progresiva_PCV = progresiva_PIV_2-(abs(cota_PIV_2-cota_PCV))/abs(m_pendiente_entrada)
     cota_FCV= cota_PIV_2 + longitud_de_curva_2/2*n_pendiente_salida
-    progresiva_FCV = progresiva_PIV_2+(cota_PIV_2-cota_FCV)/abs(n_pendiente_salida)
+    progresiva_FCV = progresiva_PIV_2+(abs(cota_PIV_2-cota_FCV))/abs(n_pendiente_salida)
     longitud_de_replanteo=int(input('longitud entre puntos para replanteo(10 , 20 etc) ='))
     print(f'Cota PCV[msnm] = {cota_PCV}')
     print(f'Progresiva PCV[msnm] = {progresiva_PCV}')
@@ -250,12 +252,12 @@ def calculos_curva_asimétrica():
         print(f'Cota= {cota_curva[contador]}')
 
 def eleccion_de_tipo_de_calculos():
-    eleccion=input("""¿Deseas realizar mas calculos?
-0. NO (el programa finalizará)
-1. Ingresar otros datos
-2. hallar longitud de curva vertical(simétrica o asimétrica)
-3. calcular progresivas y cotas de replanteo
-Elección: """)
+    eleccion=input("""    ¿Deseas realizar mas calculos?
+    0. NO (el programa finalizará)
+    1. Ingresar otros datos (cotaPI, progresivaPI, m y n)
+    2. hallar longitud de curva vertical mínima
+    3. calcular progresivas y cotas de replanteo (curvas simétricas y asimétricas)
+     Elección: """)
     if eleccion == '1':
         recolectar_datos()
         eleccion_de_tipo_de_calculos()
