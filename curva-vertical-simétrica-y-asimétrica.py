@@ -85,11 +85,10 @@ def longitud_de_la_curva_vertical():
             kce=df_distancia_de_frenado**2/(8*c-4*(2.5+.45))        #bajo estructuras
             longitud_CV_iluminacion_artificial=kci*a_dif_de_pendientes
             longitud_CV_bajo_estructura=kce*a_dif_de_pendientes
+            print(f'kci= {kci} y la longitud de curva(iluminaión artificial)[m]= {longitud_CV_iluminacion_artificial}')
+            print(f'kce= {kce} y la longitud de curva(bajo estructuras)[m]= {longitud_CV_bajo_estructura}')
     longitud_CV=k*a_dif_de_pendientes
-    print(f'k= {k} y la longitud de curva[m]= {longitud_CV}')
-    if eleccion == True:
-        print(f'kci= {kci} y la longitud de curva(iluminaión artificial)[m]= {longitud_CV_iluminacion_artificial}')
-        print(f'kce= {kce} y la longitud de curva(bajo estructuras)[m]= {longitud_CV_bajo_estructura}')
+    print(f'k= {k} y la longitud de curva[m]= A*K= {longitud_CV}')
     
 
 def eleccion_simple(pregunta):
@@ -252,9 +251,9 @@ def calculos_curva_asimétrica():
 
 def eleccion_de_tipo_de_calculos():
     eleccion=input("""¿Deseas realizar mas calculos?
-0. NO (eleccion_de_tipo_de_calculos)
+0. NO (el programa finalizará)
 1. Ingresar otros datos
-2. hallar longitud de ccurva vertical
+2. hallar longitud de curva vertical(simétrica o asimétrica)
 3. calcular progresivas y cotas de replanteo
 Elección: """)
     if eleccion == '1':
